@@ -2,16 +2,29 @@ import { FaGoogle, FaGithub, FaFacebook, FaTwitter, FaInstagram } from "react-ic
 import qzone1 from '../../../assets/qZone1.png'
 import qzone2 from '../../../assets/qZone2.png'
 import qzone3 from '../../../assets/qZone3.png'
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 const RightNav = () => {
+  const { googleLogin } = useAuth()
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(res => {
+        console.log(res.user);
+        toast.success('Log in successful')
+      })
+      .catch(error => {
+      console.log(error);
+    })
+  }
   return (
-      <div>
+      <div className="sticky overflow-y-auto max-h-screen  top-0  ">
           
         {/* login section  */}
       <div className="space-y-3 p-2 mb-6">
         <h2 className="text-3xl">Login With</h2>
-        <button className="btn btn-sm btn-outline w-full  border border-blue-500 bg-white text-blue-500">
+        <button onClick={handleGoogleLogin} className="btn btn-sm btn-outline w-full  border border-blue-500 bg-white text-blue-500">
           <FaGoogle></FaGoogle>
           Login with Google
         </button>
