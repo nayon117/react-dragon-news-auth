@@ -1,16 +1,32 @@
 import { Link } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Register = () => {
+    const { createUser } = useAuth()
+    console.log(createUser);
 
+    // register function 
     const handleRegister = e => {
         e.preventDefault()
+        // get value from field 
         const form = new FormData(e.currentTarget)
         const name = form.get('name');
         const photo = form.get('photo')
         const email = form.get('email')
         const password = form.get('password')
-        console.log(name,photo,email,password);
+        console.log(name, photo, email, password);
+        
+        // create user 
+        createUser(email, password)
+        .then(res => {
+            console.log(res.user);
+            toast.success('sign up successful')
+        })
+          .catch(error => {
+          toast.error(error.message)
+        })
    }
 
   return (

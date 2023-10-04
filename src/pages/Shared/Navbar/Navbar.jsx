@@ -1,7 +1,24 @@
 import { Link, NavLink } from "react-router-dom";
 import userDefaultPic from '../../../assets/user.png'
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  
+  const { user,logOut } = useAuth()
+
+  const handleSignOut = () => {
+    logOut()
+      .then(res => {
+        console.log(res);
+        toast.success('sign out successful')
+    })
+      .catch(error => {
+        console.log(error);
+      toast.error('something happend wrong')
+    })
+  }
+  
   const navLinks = (
     <>
       <li>
@@ -53,10 +70,15 @@ const Navbar = () => {
             <img src={userDefaultPic} />
           </div>
         </label>
-        <Link to="/login">
-     
+        {
+          user ? 
+          <button onClick={handleSignOut} className="btn btn-sm bg-[#403F3F] text-white">Sign Out</button>
+            :
+            <Link to="/login">
           <button className="btn btn-sm bg-[#403F3F] text-white">Login</button>
         </Link>
+        }
+        
       </div>
     </div>
   );

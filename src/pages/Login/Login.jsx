@@ -1,14 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
 
+  const { logIn } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+    
     const handleLogin = e => {
         e.preventDefault()
+         // get value from field 
         const form = new FormData (e.currentTarget)
         const email = form.get('email');
         const password = form.get('password')
-        console.log(email,password);
+
+        // logIn functionality 
+        logIn(email, password)
+            .then(res => {
+                console.log(res.user);
+              toast.success('sign in successful')
+              navigate(location?.state ? location.state : '/')
+            })
+            .catch(error => {
+                console.log(error.message);
+                toast.error('something went wrong')
+        })
    }
 
   return (
@@ -83,7 +101,7 @@ const Login = () => {
                     Forgot password?
                   </a>
                 </div>
-                <button
+                <button 
                   type="submit"
                   className="w-full btn btn-secondary "
                 >
